@@ -1,0 +1,191 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "Notification NestJS Service",
+		"description": "Postman collection for the optimized NestJS Notification Management Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health & Admin",
+			"item": [
+				{
+					"name": "Heartbeat",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/HbtChk",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"HbtChk"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Template Cache",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/notification/admin/cacheReset",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"notification",
+								"admin",
+								"cacheReset"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vendor Registry",
+			"item": [
+				{
+					"name": "List All Vendors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/vendors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"vendors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register New Vendor (Raven)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vendor_name\": \"raven\",\n    \"display_name\": \"Raven (Multi-channel)\",\n    \"api_url\": \"https://api.ravenapp.dev/v1/apps/YOUR_APP_ID/events/send\",\n    \"http_method\": \"POST\",\n    \"headers\": {\n        \"Authorization\": \"AuthKey YOUR_API_KEY\",\n        \"Content-Type\": \"application/json\"\n    },\n    \"auth_type\": \"apikey\",\n    \"request_template\": \"{\\\"event\\\":\\\"{{event_name}}\\\",\\\"user\\\":{\\\"mobile\\\":\\\"{{mobile_number}}\\\",\\\"email\\\":\\\"{{email}}\\\"},\\\"payload\\\":{\\\"text\\\":\\\"{{text}}\\\",\\\"otp\\\":\\\"{{otp}}\\\",\\\"subject\\\":\\\"{{subject}}\\\",\\\"name\\\":\\\"{{user_name}}\\\",\\\"p1\\\":\\\"{{param_a}}\\\",\\\"p2\\\":\\\"{{param_b}}\\\",\\\"p3\\\":\\\"{{param_c}}\\\",\\\"url\\\":\\\"{{url}}\\\"}} \",\n    \"response_success_path\": \"success\",\n    \"timeout_ms\": 30000,\n    \"channels\": [\"SMS\", \"EMAIL\", \"WAPP\", \"PUSH\"],\n    \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/vendors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"vendors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Vendor Cache",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/vendors/cache/refresh",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"vendors",
+								"cache",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notification Dispatch",
+			"item": [
+				{
+					"name": "Send Notification (E003 Forget Pass)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_name\": \"test_user\",\n    \"feature\": \"FORGETPASSWORD\",\n    \"operation_performed\": \"PASSWORD_TEMPORARY\",\n    \"status\": \"SUCCESS\",\n    \"notification_data\": {\n        \"email\": \"user@example.com\",\n        \"params\": {\n            \"20\": \"Test User\",\n            \"21\": \"9s2k4L-TEMP\"\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/notification/sendNotification",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"notification",
+								"sendNotification"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Notification (S004 Reset OTP)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_name\": \"test_org\",\n    \"feature\": \"CHANGEPASSWORD\",\n    \"operation_performed\": \"RESET_OTP\",\n    \"status\": \"SUCCESS\",\n    \"status_code\": 0,\n    \"notification_data\": {\n        \"mobile_number\": \"9876543210\",\n        \"params\": {\n            \"4\": \"test_org\",\n            \"otp\": \"123456\"\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/notification/sendNotification",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"notification",
+								"sendNotification"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
